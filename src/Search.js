@@ -7,14 +7,19 @@ export default function Search() {
   const [weatherData, setWeatherData] = useState({ ready: false });
 
   function handleResponse(response) {
+    console.log(response);
     setWeatherData({
       ready: true,
       city: response.data.name,
-      wind: response.data.wind.speed,
-      humidity: response.data.main.humidity,
+      date: new Date(response.data.dt * 1000),
+      icon: response.data.weather[0].icon,
       temperature: response.data.main.temp,
       description: response.data.weather[0].description,
-      icon: response.data.weather[0].icon
+      minTemperature: response.data.main.temp_min,
+      maxTemperature: response.data.main.temp_max,
+      feelsLike: response.data.main.feels_like,
+      wind: response.data.wind.speed,
+      humidity: response.data.main.humidity
     });
   }
 
@@ -37,14 +42,15 @@ export default function Search() {
   }
   return (
     <div className="Search">
-      <form onSubmit={handleSubmit}>
+      <form className="d-flex" onSubmit={handleSubmit}>
         <input
+          className="form-control me-1"
           type="search"
           placeholder="Enter a city"
           autoFocus={true}
           onChange={defineCity}
         />
-        <input type="submit" value="Search" />
+        <input className="btn btn-dark m-1" type="submit" value="Search" />
       </form>
       <Weather data={weatherData} />
     </div>

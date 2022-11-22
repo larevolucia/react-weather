@@ -9,4 +9,72 @@ img {
 }
 h2 {
   margin-bottom: 5px;
+  font-size: 22px;
 }
+h3 {
+  font-size: 18px;
+}
+.Weather {
+  margin: 30px 0;
+}
+
+.temp-current {
+  font-size: 40px;
+  vertical-align: middle;
+}
+
+/*copied css
+body {
+  font-family: "Open Sans", sans-serif;
+}
+h1,
+h2 {
+  font-family: "Raleway", sans-serif;
+}
+h1 {
+  font-size: 22px;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+li {
+  margin: 0;
+  padding: 0;
+}
+h2 {
+  font-size: 18px;
+}
+
+.search-form {
+  margin-bottom: 50px;
+}
+
+.weather-wrapper {
+  padding: 12px 6px;
+}
+h1 .local-icon {
+  font-size: 20px;
+}
+
+.weather-today ul {
+  margin-top: 77px;
+}
+.weather-today {
+  margin-bottom: 10px;
+}
+.today-description {
+  text-transform: capitalize;
+}
+.forecast-max-temp,
+.forecast-min-temp {
+  font-weight: bold;
+}
+.forecast-min-temp {
+  opacity: 0.6;
+}
+.preview {
+  text-align: center;
+}
+*/
