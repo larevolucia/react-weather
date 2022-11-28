@@ -4,9 +4,11 @@ import "./Footer.css";
 export default function Footer() {
   return (
     <footer className="FooterS">
-      This site is open source
+      Coded by Lucia Reis
       <div>
-        <a href="https://github.com/larevolucia/react-weather">Weather App</a>
+        <a href="https://github.com/larevolucia/react-weather">
+          github repository
+        </a>
       </div>
     </footer>
   );

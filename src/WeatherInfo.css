@@ -1,0 +1,14 @@
+.WeatherInfo ul {
+  list-style: none;
+  text-align: center;
+  margin: 0 auto;
+  padding: 0;
+}
+.WeatherInfo li {
+  font-size: 12px;
+}
+
+.WeatherInfo .temp-current {
+  font-size: 30px;
+  vertical-align: middle;
+}
