@@ -10,15 +10,15 @@ export default function ForecastDay(props) {
       <div className="row">
         <div className="col">
           <div className="forecast-day">
-            <FormattedDay day={props.forecast[0].dt} />
+            <FormattedDay day={props.forecast[1].dt} />
           </div>
-          <WeatherIcon icon={props.forecast[0].weather[0].icon} size={36} />
+          <WeatherIcon icon={props.forecast[1].weather[0].icon} size={36} />
           <div className="forecast-temperatures">
             <span className="forecast-temp-max">
-              {Math.ceil(props.forecast[0].temp.max)}
+              {Math.ceil(props.forecast[1].temp.max)}
             </span>{" "}
             <span className="forecast-temp-min">
-              {Math.floor(props.forecast[0].temp.min)}
+              {Math.floor(props.forecast[1].temp.min)}
             </span>
           </div>
         </div>
