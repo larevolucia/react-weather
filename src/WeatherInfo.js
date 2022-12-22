@@ -24,7 +24,7 @@ export default function WeatherInfo(props) {
             </a>
           </span>
         </div>
-        <div className="col-6 text-start">
+        <div className="col-6">
           <ul className="mt-2">
             <li className="text-capitalize">{props.description}</li>
             <li>Wind: {Math.round(props.wind)} km/h</li>
