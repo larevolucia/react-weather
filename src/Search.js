@@ -10,7 +10,8 @@ export default function Search() {
     setWeatherData({
       ready: true,
       city: response.data.name,
-      date: new Date(response.data.dt * 1000),
+      coordinates: response.data.coord,
+      date: response.data.dt,
       icon: response.data.weather[0].icon,
       temperature: response.data.main.temp,
       description: response.data.weather[0].description,
