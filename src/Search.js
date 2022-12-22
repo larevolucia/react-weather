@@ -7,9 +7,9 @@ export default function Search() {
   const [weatherData, setWeatherData] = useState({ ready: false });
 
   function handleResponse(response) {
-    console.log(response);
     setWeatherData({
       ready: true,
+      coordinates: response.data.coord,
       city: response.data.name,
       date: new Date(response.data.dt * 1000),
       icon: response.data.weather[0].icon,
@@ -40,6 +40,7 @@ export default function Search() {
   function defineCity(event) {
     setCity(event.target.value);
   }
+
   return (
     <div className="Search">
       <form className="d-flex" onSubmit={handleSubmit}>
