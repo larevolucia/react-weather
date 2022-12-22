@@ -3,11 +3,16 @@ import "./Footer.css";
 
 export default function Footer() {
   return (
-    <footer className="FooterS">
-      Coded by Lucia Reis
-      <div>
-        <a href="https://github.com/larevolucia/react-weather">
-          github repository
+    <footer className="Footer">
+      <div className="text-center mt-3">
+        ✌️ This website was coded by Lúcia Reis, and is
+        <a
+          href="https://github.com/larevolucia/react-weather"
+          target="_blank"
+          title="Github Repository"
+        >
+          {" "}
+          open-sourced
         </a>
       </div>
     </footer>
