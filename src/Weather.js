@@ -27,8 +27,8 @@ export default function Weather(props) {
               />
             </div>
           </div>
+          <WeatherForecast coordinates={props.data.coordinates} />
         </div>
-        <WeatherForecast coordinates={props.data.coordinates} />
       </div>
     );
   }
