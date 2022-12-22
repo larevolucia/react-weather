@@ -9,6 +9,7 @@ export default function Footer() {
         <a
           href="https://github.com/larevolucia/react-weather"
           target="_blank"
+          rel="noopener noreferrer"
           title="Github Repository"
         >
           {" "}
