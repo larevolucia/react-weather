@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./styles/Search.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +15,21 @@ export default function Search() {
   const apiKeyWeather = "6bf5993fd6f246de7b98dc6c43d6cd79";
   const apiWeatherEndPoint = "https://api.openweathermap.org/data/2.5/weather";
   const [error, setError] = useState(null);
+  const initialFetch = useRef(false);
+  const defaultCity = "Rio de Janeiro";
+
+  useEffect(() => {
+    if (!initialFetch.current) {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          fetchWeatherByCoordinates(position);
+        }, handleLocationError);
+      } else {
+        handleLocationError({ code: "NOT_SUPPORTED" });
+      }
+      initialFetch.current = true;
+    }
+  }, []);
 
   function handleResponse(response) {
     setWeatherData({
@@ -32,6 +47,19 @@ export default function Search() {
       humidity: response.data.main.humidity
     });
   }
+  const fetchWeatherByCity = async (city) => {
+    console.log(city);
+    try {
+      const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
+      const response = await axios.get(apiUrl);
+      handleResponse(response);
+    } catch (error) {
+      setError({
+        title: `${city} not found`,
+        message: "Search another city or try again later."
+      });
+    }
+  };
 
   const handleSubmit = async (event) => {
     console.log(city);
@@ -76,6 +104,8 @@ export default function Search() {
       default:
         console.log("Couldn't get location.");
     }
+    setCity(defaultCity);
+    fetchWeatherByCity(defaultCity);
   }
 
   const fetchWeatherByCoordinates = async (position) => {
