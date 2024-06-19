@@ -14,11 +14,12 @@
 
 header,
 section,
-main,
 footer {
   background-color: #fff;
 }
-
+.git-link {
+  color: var(--link-color);
+}
 header {
   padding: 30px 30px;
   border-radius: 5px;

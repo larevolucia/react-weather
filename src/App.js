@@ -17,6 +17,7 @@ function App() {
           <p>
             This app was coded by Lúcia Reis and is{" "}
             <a
+              className="git-link"
               href="https://github.com/larevolucia/react-dictionary"
               target="_blank"
               rel="noreferrer"
