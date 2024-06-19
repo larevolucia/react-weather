@@ -1,0 +1,56 @@
+.modal-container {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 10px;
+  padding: 20px 10px;
+  background-color: #fff;
+}
+.error-msg {
+  padding: 1rem;
+}
+.error-modal h2 {
+  font-size: 20px;
+  padding: 0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.error-msg {
+  font-size: 1rem;
+  padding: 0;
+}
+.modal-close {
+  padding: 1rem;
+  margin: 0;
+  display: flex;
+  justify-content: end;
+}
+.modal-close button {
+  background-color: var(--button-color);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 7px 14px;
+  margin: 0;
+}
+.modal-close button:hover {
+  background-color: var(--hover-color);
+}
+
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-title {
+  margin-top: 5px;
+}

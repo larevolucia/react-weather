@@ -7,12 +7,14 @@ import {
   faLocationDot
 } from "@fortawesome/free-solid-svg-icons";
 import Weather from "./Weather";
+import Modal from "./Modal";
 
 export default function Search() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState({ ready: false });
   const apiKeyWeather = "6bf5993fd6f246de7b98dc6c43d6cd79";
   const apiWeatherEndPoint = "https://api.openweathermap.org/data/2.5/weather";
+  const [error, setError] = useState(null);
 
   function handleResponse(response) {
     setWeatherData({
@@ -34,12 +36,25 @@ export default function Search() {
   const handleSubmit = async (event) => {
     console.log(city);
     event.preventDefault();
-    try {
-      const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
-      const response = await axios.get(apiUrl);
-      handleResponse(response);
-    } catch (error) {}
+    if (city !== "") {
+      try {
+        const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
+        const response = await axios.get(apiUrl);
+        handleResponse(response);
+      } catch (error) {
+        setError({
+          title: `${city} not found`,
+          message: "Search another city or try again later."
+        });
+      }
+    } else {
+      setError({
+        title: "Empty search",
+        message: "Oops! It looks like you haven't type anything."
+      });
+    }
   };
+
   function handleCityChange(event) {
     setCity(event.target.value);
   }
@@ -82,6 +97,11 @@ export default function Search() {
       console.log("Geolocation is not supported by this browser.");
     }
   }
+
+  const errorHandler = () => {
+    setError(null);
+  };
+
   return (
     <main className="Search">
       <form
@@ -107,6 +127,13 @@ export default function Search() {
         </div>
       </form>
       <Weather data={weatherData} />
+      {error && (
+        <Modal
+          title={error.title}
+          message={error.message}
+          onClose={errorHandler}
+        />
+      )}
     </main>
   );
 }
