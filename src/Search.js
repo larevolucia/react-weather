@@ -134,10 +134,7 @@ export default function Search() {
 
   return (
     <main className="Search">
-      <form
-        className="search-form shadow-sm p-3 mb-3 bg-body rounded"
-        onSubmit={handleSubmit}
-      >
+      <form className="search-form p-3 mb-3 bg-body" onSubmit={handleSubmit}>
         <div className="grid grid-3-col">
           <input
             className="form-control"
