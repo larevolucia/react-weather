@@ -11,6 +11,8 @@ import Weather from "./Weather";
 export default function Search() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState({ ready: false });
+  const apiKeyWeather = "6bf5993fd6f246de7b98dc6c43d6cd79";
+  const apiWeatherEndPoint = "https://api.openweathermap.org/data/2.5/weather";
 
   function handleResponse(response) {
     setWeatherData({
@@ -33,9 +35,6 @@ export default function Search() {
     console.log(city);
     event.preventDefault();
     try {
-      const apiKeyWeather = "6bf5993fd6f246de7b98dc6c43d6cd79";
-      const apiWeatherEndPoint =
-        "https://api.openweathermap.org/data/2.5/weather";
       const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
       const response = await axios.get(apiUrl);
       handleResponse(response);
@@ -44,7 +43,45 @@ export default function Search() {
   function handleCityChange(event) {
     setCity(event.target.value);
   }
+  function handleLocationError(error) {
+    // Error callback
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        console.log("User denied the request for Geolocation.");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        console.log("Location information is unavailable.");
+        break;
+      case error.TIMEOUT:
+        console.log("The request to get user location timed out.");
+        break;
+      case error.UNKNOWN_ERROR:
+        console.log("An unknown error occurred.");
+        break;
+      default:
+        console.log("Couldn't get location.");
+    }
+  }
 
+  const fetchWeatherByCoordinates = async (position) => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    try {
+      const apiUrl = `${apiWeatherEndPoint}?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKeyWeather}`;
+      const response = await axios.get(apiUrl);
+      handleResponse(response);
+    } catch (error) {}
+  };
+
+  function getLocation(event) {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        fetchWeatherByCoordinates(position);
+      }, handleLocationError);
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  }
   return (
     <main className="Search">
       <form
@@ -64,7 +101,7 @@ export default function Search() {
           <button className="search-button" type="submit">
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </button>
-          <button className="search-button" type="button">
+          <button className="search-button" type="button" onClick={getLocation}>
             <FontAwesomeIcon icon={faLocationDot} />
           </button>
         </div>

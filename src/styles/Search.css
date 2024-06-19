@@ -9,7 +9,7 @@
   background-color: var(--button-color);
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   transition: var(--transition);
 }
 .search-button:hover {
