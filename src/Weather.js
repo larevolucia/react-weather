@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import "./styles/Weather.css";
 import FormattedDate from "./FormattedDate";
 import WeatherInfo from "./WeatherInfo";
 import WeatherForecast from "./WeatherForecast";
 
 export default function Weather({ data }) {
-  console.log(data);
-  console.log(data.feelsLike);
+  const [unit, setUnit] = useState("celsius");
+
+  function handleUnitChange(newUnit) {
+    setUnit(newUnit);
+  }
+
   if (data.ready) {
     return (
       <div className="Weather">
@@ -21,11 +25,13 @@ export default function Weather({ data }) {
               description={data.description}
               wind={data.wind}
               humidity={data.humidity}
+              unit={unit}
+              onUnitChange={handleUnitChange}
             />
           </div>
         </div>
         <div className="forecast-container">
-          <WeatherForecast coordinates={data.coordinates} />
+          <WeatherForecast coordinates={data.coordinates} unit={unit} />
         </div>
       </div>
     );

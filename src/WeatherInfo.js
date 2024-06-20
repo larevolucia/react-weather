@@ -2,6 +2,7 @@
 import React from "react";
 import "./styles/Weather.css";
 import WeatherIcon from "./WeatherIcon";
+import { celsiusToFahrenheit } from "./temperatureConversion";
 
 export default function WeatherInfo({
   celsius,
@@ -9,23 +10,59 @@ export default function WeatherInfo({
   description,
   wind,
   humidity,
-  feelsLike
+  feelsLike,
+  unit,
+  onUnitChange
 }) {
+  let temperature = celsius;
+  let feelsLikeTemp = feelsLike;
+
+  if (unit === "fahrenheit") {
+    temperature = celsiusToFahrenheit(celsius);
+    feelsLikeTemp = celsiusToFahrenheit(feelsLike);
+  }
+  function getFahrenheit(event) {
+    event.preventDefault();
+    onUnitChange("fahrenheit");
+  }
+
+  function getCelsius(event) {
+    event.preventDefault();
+    onUnitChange("celsius");
+  }
+
   return (
     <div className="WeatherInfo row mt-3">
       <div id="current-temperature" className="col-6">
         <div className="weather-info-container">
-          <WeatherIcon icon={icon} size={42} />
-          <span className="temp-current">{Math.round(celsius)}°</span>
-          <span className="unit">C</span>
+          <WeatherIcon icon={icon} size={50} />
+          <span className="temp-current">{Math.round(temperature)}°</span>
+          <span className="unit">
+            <button
+              onClick={getCelsius}
+              className={unit === "fahrenheit" ? "active" : ""}
+            >
+              C
+            </button>
+          </span>
+          |
+          <span className="unit">
+            <button
+              onClick={getFahrenheit}
+              className={unit === "celsius" ? "active" : ""}
+            >
+              F
+            </button>
+          </span>
         </div>
+        <div>{description}</div>
       </div>
       <div id="details" className="col-6">
         <table className="details-table table">
           <tbody>
             <tr>
               <th scope="row">Feels Like</th>
-              <td>{Math.round(feelsLike)}°</td>
+              <td>{Math.round(feelsLikeTemp)}°</td>
             </tr>
             <tr>
               <th scope="row">Humidity</th>

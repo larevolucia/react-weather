@@ -57,7 +57,6 @@ export default function Search() {
             title: "Permission denied",
             description: "User denied the request for Geolocation."
           });
-          console.log("User denied the request for Geolocation.");
           break;
         case error.POSITION_UNAVAILABLE:
           setErrorAlert({
@@ -65,7 +64,6 @@ export default function Search() {
             title: "Position unavailable",
             description: "Location information is unavailable."
           });
-          console.log("Location information is unavailable.");
           break;
         case error.TIMEOUT:
           setErrorAlert({
@@ -73,7 +71,6 @@ export default function Search() {
             title: "Timeout",
             description: "The request to get user location timed out."
           });
-          console.log("The request to get user location timed out.");
           break;
         case error.UNKNOWN_ERROR:
           setErrorAlert({
@@ -81,7 +78,6 @@ export default function Search() {
             title: "Unknown error",
             description: "An unknown error occurred."
           });
-          console.log("An unknown error occurred.");
           break;
         case "NOT_SUPPORTED":
           setErrorAlert({
@@ -89,7 +85,6 @@ export default function Search() {
             title: "Not Supported",
             description: "Geolocation is not supported by this browser."
           });
-          console.log("Geolocation is not supported by this browser.");
           break;
         default:
           setErrorAlert({
@@ -97,7 +92,6 @@ export default function Search() {
             title: "Error getting location",
             description: "Couldn't get location."
           });
-          console.log("Couldn't get location.");
       }
       setCity(defaultCity);
       fetchWeatherByCity(defaultCity);
@@ -122,7 +116,7 @@ export default function Search() {
     if (errorAlert.display) {
       const timer = setTimeout(() => {
         setErrorAlert({ display: false });
-      }, 1500); // Adjust the time as needed (5000ms = 5 seconds)
+      }, 2500); // Adjust the time as needed (5000ms = 5 seconds)
 
       return () => clearTimeout(timer);
     }

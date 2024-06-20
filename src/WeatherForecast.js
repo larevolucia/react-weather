@@ -3,13 +3,13 @@ import ForecastDay from "./ForecastDay";
 import "./styles/Weather.css";
 import axios from "axios";
 
-export default function WeatherForecast({ coordinates }) {
+export default function WeatherForecast({ coordinates, unit }) {
   let [loaded, setLoaded] = useState(false);
   let [forecast, setForecast] = useState(null);
 
   useEffect(() => {
     setLoaded(false);
-  }, [coordinates]);
+  }, [coordinates, unit]);
 
   function handleResponse(response) {
     setForecast(response.data.daily);
@@ -23,7 +23,7 @@ export default function WeatherForecast({ coordinates }) {
           if (index >= 1 && index < 8) {
             return (
               <div className="day-card" key={index}>
-                <ForecastDay data={dailyForecast} />
+                <ForecastDay data={dailyForecast} unit={unit} />
               </div>
             );
           } else {
@@ -39,7 +39,6 @@ export default function WeatherForecast({ coordinates }) {
     let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
     axios.get(apiUrl).then(handleResponse);
-    console.log(apiUrl);
 
     return null;
   }

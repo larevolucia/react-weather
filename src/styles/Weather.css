@@ -4,7 +4,9 @@
 li {
   list-style-type: none;
 }
-
+span {
+  margin: 0;
+}
 .weather-info-container {
   display: flex;
   align-items: center;
@@ -20,15 +22,20 @@ li {
   margin: 0 auto;
 }
 .temp-current {
-  font-size: 45px;
+  font-size: 40px;
   color: #000;
 }
 .unit {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  line-height: 1.28;
-  margin-left: -18px;
+  line-height: 1;
+  margin-left: -20px;
   opacity: 0.5;
+  font-weight: bold;
+}
+.active {
+  color: var(--hover-color);
+  font-weight: bolder;
 }
 .details-table {
   font-size: 12px;
