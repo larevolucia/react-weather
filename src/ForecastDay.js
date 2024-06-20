@@ -12,10 +12,10 @@ export default function ForecastDay(props) {
       <WeatherIcon icon={props.data.weather[0].icon} size={36} />
       <div className="forecast-temperatures">
         <span className="forecast-temp-max">
-          {Math.ceil(props.data.temp.max)}
+          {Math.ceil(props.data.temp.max)}°
         </span>{" "}
         <span className="forecast-temp-min">
-          {Math.floor(props.data.temp.min)}
+          {Math.floor(props.data.temp.min)}°
         </span>
       </div>
     </div>

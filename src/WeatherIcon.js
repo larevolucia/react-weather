@@ -27,11 +27,13 @@ export default function WeatherIcon(props) {
   const { icon: iconName = null, size: iconSize = 42 } = props;
 
   return (
-    <ReactAnimatedWeather
-      icon={iconMapping[iconName]}
-      color="#35495e"
-      size={iconSize}
-      animate={true}
-    />
+    <span className="weather-icon">
+      <ReactAnimatedWeather
+        icon={iconMapping[iconName]}
+        color="#35495e"
+        size={iconSize}
+        animate={true}
+      />
+    </span>
   );
 }

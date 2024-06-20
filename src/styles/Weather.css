@@ -4,8 +4,20 @@
 li {
   list-style-type: none;
 }
-icon {
-  display: block;
+
+.weather-info-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weather-info-container .temp-current,
+.weather-info-container .unit,
+.weather-info-container .weather-icon {
+  margin: 0 5px;
+}
+.weather-icon {
+  margin: 0 auto;
 }
 .temp-current {
   font-size: 45px;

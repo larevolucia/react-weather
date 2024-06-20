@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Weather from "./Weather";
 import Modal from "./Modal";
+import ChakraA from "./ChakraA";
 
 export default function Search() {
   const [city, setCity] = useState("");
@@ -15,6 +16,7 @@ export default function Search() {
   const apiKeyWeather = "6bf5993fd6f246de7b98dc6c43d6cd79";
   const apiWeatherEndPoint = "https://api.openweathermap.org/data/2.5/weather";
   const [error, setError] = useState(null);
+  const [errorAlert, setErrorAlert] = useState({ display: false });
   const initialFetch = useRef(false);
   const defaultCity = "New York"; // Set your default city here
 
@@ -30,6 +32,16 @@ export default function Search() {
       initialFetch.current = true;
     }
   }, []);
+
+  useEffect(() => {
+    if (errorAlert.display) {
+      const timer = setTimeout(() => {
+        setErrorAlert({ display: false });
+      }, 1500); // Adjust the time as needed (5000ms = 5 seconds)
+
+      return () => clearTimeout(timer);
+    }
+  }, [errorAlert]);
 
   function handleResponse(response) {
     setWeatherData({
@@ -77,21 +89,51 @@ export default function Search() {
     // Error callback
     switch (error.code) {
       case error.PERMISSION_DENIED:
+        setErrorAlert({
+          display: true,
+          title: "Permission denied",
+          description: "User denied the request for Geolocation."
+        });
         console.log("User denied the request for Geolocation.");
         break;
       case error.POSITION_UNAVAILABLE:
+        setErrorAlert({
+          display: true,
+          title: "Position unavailable",
+          description: "Location information is unavailable."
+        });
         console.log("Location information is unavailable.");
         break;
       case error.TIMEOUT:
+        setErrorAlert({
+          display: true,
+          title: "Timeout",
+          description: "The request to get user location timed out."
+        });
         console.log("The request to get user location timed out.");
         break;
       case error.UNKNOWN_ERROR:
+        setErrorAlert({
+          display: true,
+          title: "Unkown error",
+          description: "An unknown error occurred."
+        });
         console.log("An unknown error occurred.");
         break;
       case "NOT_SUPPORTED":
+        setErrorAlert({
+          display: true,
+          title: "Not Supported",
+          description: "Geolocation is not supported by this browser."
+        });
         console.log("Geolocation is not supported by this browser.");
         break;
       default:
+        setErrorAlert({
+          display: true,
+          title: "Error getting location",
+          description: "Couldn't get location."
+        });
         console.log("Couldn't get location.");
     }
     setCity(defaultCity);
@@ -139,6 +181,9 @@ export default function Search() {
   const errorHandler = () => {
     setError(null);
   };
+  const alertHandler = () => {
+    setErrorAlert({ display: false });
+  };
 
   return (
     <main className="Search">
@@ -167,6 +212,13 @@ export default function Search() {
           title={error.title}
           message={error.message}
           onClose={errorHandler}
+        />
+      )}
+      {errorAlert.display && (
+        <ChakraA
+          onClick={alertHandler}
+          title={errorAlert.title}
+          description={errorAlert.description}
         />
       )}
     </main>
