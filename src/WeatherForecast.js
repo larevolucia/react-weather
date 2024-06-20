@@ -30,7 +30,11 @@ export default function WeatherForecast({ coordinates, unit }) {
   }, [coordinates, unit]);
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <div className={`loader-forecast ${isLoading ? "visible" : ""}`}>
+        <Loader />
+      </div>
+    );
   }
 
   return (

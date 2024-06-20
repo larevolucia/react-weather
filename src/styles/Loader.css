@@ -1,0 +1,19 @@
+.loader-home,
+.loader-forecast {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.loader-home.visible,
+.loader-forecast.visible {
+  opacity: 1;
+}

@@ -195,7 +195,7 @@ export default function Search() {
   return (
     <main className="Search">
       {isLoading && (
-        <div className="loader-container">
+        <div className={`loader-home ${isLoading ? "visible" : ""}`}>
           <Loader />
         </div>
       )}
