@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import "./styles/Search.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,7 +20,7 @@ export default function Search() {
   const initialFetch = useRef(false);
   const defaultCity = "New York"; // Set your default city here
 
-  const fetchWeatherByCoordinates = async (position) => {
+  const fetchWeatherByCoordinates = useCallback(async (position) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
     try {
@@ -33,7 +33,77 @@ export default function Search() {
         message: "Could not fetch weather data. Please try again later."
       });
     }
-  };
+  }, []);
+
+  const fetchWeatherByCity = useCallback(async (city) => {
+    try {
+      const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
+      const response = await axios.get(apiUrl);
+      handleResponse(response);
+    } catch (error) {
+      setError({
+        title: `${city} not found`,
+        message: "Search another city or try again later."
+      });
+    }
+  }, []);
+
+  const handleLocationError = useCallback(
+    (error) => {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          setErrorAlert({
+            display: true,
+            title: "Permission denied",
+            description: "User denied the request for Geolocation."
+          });
+          console.log("User denied the request for Geolocation.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          setErrorAlert({
+            display: true,
+            title: "Position unavailable",
+            description: "Location information is unavailable."
+          });
+          console.log("Location information is unavailable.");
+          break;
+        case error.TIMEOUT:
+          setErrorAlert({
+            display: true,
+            title: "Timeout",
+            description: "The request to get user location timed out."
+          });
+          console.log("The request to get user location timed out.");
+          break;
+        case error.UNKNOWN_ERROR:
+          setErrorAlert({
+            display: true,
+            title: "Unknown error",
+            description: "An unknown error occurred."
+          });
+          console.log("An unknown error occurred.");
+          break;
+        case "NOT_SUPPORTED":
+          setErrorAlert({
+            display: true,
+            title: "Not Supported",
+            description: "Geolocation is not supported by this browser."
+          });
+          console.log("Geolocation is not supported by this browser.");
+          break;
+        default:
+          setErrorAlert({
+            display: true,
+            title: "Error getting location",
+            description: "Couldn't get location."
+          });
+          console.log("Couldn't get location.");
+      }
+      setCity(defaultCity);
+      fetchWeatherByCity(defaultCity);
+    },
+    [setErrorAlert, setCity, fetchWeatherByCity, defaultCity]
+  );
 
   useEffect(() => {
     if (!initialFetch.current) {
@@ -99,74 +169,6 @@ export default function Search() {
   function handleCityChange(event) {
     setCity(event.target.value);
   }
-
-  function handleLocationError(error) {
-    // Error callback
-    switch (error.code) {
-      case error.PERMISSION_DENIED:
-        setErrorAlert({
-          display: true,
-          title: "Permission denied",
-          description: "User denied the request for Geolocation."
-        });
-        console.log("User denied the request for Geolocation.");
-        break;
-      case error.POSITION_UNAVAILABLE:
-        setErrorAlert({
-          display: true,
-          title: "Position unavailable",
-          description: "Location information is unavailable."
-        });
-        console.log("Location information is unavailable.");
-        break;
-      case error.TIMEOUT:
-        setErrorAlert({
-          display: true,
-          title: "Timeout",
-          description: "The request to get user location timed out."
-        });
-        console.log("The request to get user location timed out.");
-        break;
-      case error.UNKNOWN_ERROR:
-        setErrorAlert({
-          display: true,
-          title: "Unkown error",
-          description: "An unknown error occurred."
-        });
-        console.log("An unknown error occurred.");
-        break;
-      case "NOT_SUPPORTED":
-        setErrorAlert({
-          display: true,
-          title: "Not Supported",
-          description: "Geolocation is not supported by this browser."
-        });
-        console.log("Geolocation is not supported by this browser.");
-        break;
-      default:
-        setErrorAlert({
-          display: true,
-          title: "Error getting location",
-          description: "Couldn't get location."
-        });
-        console.log("Couldn't get location.");
-    }
-    setCity(defaultCity);
-    fetchWeatherByCity(defaultCity);
-  }
-
-  const fetchWeatherByCity = async (city) => {
-    try {
-      const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
-      const response = await axios.get(apiUrl);
-      handleResponse(response);
-    } catch (error) {
-      setError({
-        title: `${city} not found`,
-        message: "Search another city or try again later."
-      });
-    }
-  };
 
   function getLocation(event) {
     if ("geolocation" in navigator) {
