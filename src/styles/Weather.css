@@ -42,4 +42,8 @@ icon {
   .scroll {
     overflow-x: hidden;
   }
+  .Weather {
+    max-width: 500px;
+    margin: 0 auto;
+  }
 }

@@ -20,7 +20,7 @@ export default function WeatherInfo({
         </div>
       </div>
       <div id="details" className="col-6">
-        <table className="details-table table table-hover">
+        <table className="details-table table">
           <tbody>
             <tr>
               <th scope="row">Feels Like</th>

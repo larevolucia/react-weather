@@ -16,7 +16,7 @@ export default function Search() {
   const apiWeatherEndPoint = "https://api.openweathermap.org/data/2.5/weather";
   const [error, setError] = useState(null);
   const initialFetch = useRef(false);
-  const defaultCity = "Rio de Janeiro";
+  const defaultCity = "New York"; // Set your default city here
 
   useEffect(() => {
     if (!initialFetch.current) {
@@ -47,22 +47,8 @@ export default function Search() {
       humidity: response.data.main.humidity
     });
   }
-  const fetchWeatherByCity = async (city) => {
-    console.log(city);
-    try {
-      const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
-      const response = await axios.get(apiUrl);
-      handleResponse(response);
-    } catch (error) {
-      setError({
-        title: `${city} not found`,
-        message: "Search another city or try again later."
-      });
-    }
-  };
 
   const handleSubmit = async (event) => {
-    console.log(city);
     event.preventDefault();
     if (city !== "") {
       try {
@@ -78,7 +64,7 @@ export default function Search() {
     } else {
       setError({
         title: "Empty search",
-        message: "Oops! It looks like you haven't type anything."
+        message: "Oops! It looks like you haven't typed anything."
       });
     }
   };
@@ -86,6 +72,7 @@ export default function Search() {
   function handleCityChange(event) {
     setCity(event.target.value);
   }
+
   function handleLocationError(error) {
     // Error callback
     switch (error.code) {
@@ -101,6 +88,9 @@ export default function Search() {
       case error.UNKNOWN_ERROR:
         console.log("An unknown error occurred.");
         break;
+      case "NOT_SUPPORTED":
+        console.log("Geolocation is not supported by this browser.");
+        break;
       default:
         console.log("Couldn't get location.");
     }
@@ -115,7 +105,25 @@ export default function Search() {
       const apiUrl = `${apiWeatherEndPoint}?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKeyWeather}`;
       const response = await axios.get(apiUrl);
       handleResponse(response);
-    } catch (error) {}
+    } catch (error) {
+      setError({
+        title: "Error fetching weather data",
+        message: "Could not fetch weather data. Please try again later."
+      });
+    }
+  };
+
+  const fetchWeatherByCity = async (city) => {
+    try {
+      const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
+      const response = await axios.get(apiUrl);
+      handleResponse(response);
+    } catch (error) {
+      setError({
+        title: `${city} not found`,
+        message: "Search another city or try again later."
+      });
+    }
   };
 
   function getLocation(event) {
@@ -124,7 +132,7 @@ export default function Search() {
         fetchWeatherByCoordinates(position);
       }, handleLocationError);
     } else {
-      console.log("Geolocation is not supported by this browser.");
+      handleLocationError({ code: "NOT_SUPPORTED" });
     }
   }
 
@@ -134,7 +142,7 @@ export default function Search() {
 
   return (
     <main className="Search">
-      <form className="search-form p-3 mb-3 bg-body" onSubmit={handleSubmit}>
+      <form className="search-form p-3 mb-3" onSubmit={handleSubmit}>
         <div className="grid grid-3-col">
           <input
             className="form-control"

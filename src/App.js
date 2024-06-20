@@ -18,7 +18,7 @@ function App() {
             This app was coded by Lúcia Reis and is{" "}
             <a
               className="git-link"
-              href="https://github.com/larevolucia/react-dictionary"
+              href="https://github.com/larevolucia/react-weather-24"
               target="_blank"
               rel="noreferrer"
             >
