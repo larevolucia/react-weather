@@ -9,20 +9,23 @@ import {
 import Weather from "./Weather";
 import Modal from "./Modal";
 import ChakraA from "./ChakraA";
+import Loader from "./Loader";
 
 export default function Search() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState({ ready: false });
   const apiKeyWeather = "6bf5993fd6f246de7b98dc6c43d6cd79";
   const apiWeatherEndPoint = "https://api.openweathermap.org/data/2.5/weather";
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [errorAlert, setErrorAlert] = useState({ display: false });
   const initialFetch = useRef(false);
-  const defaultCity = "New York"; // Set your default city here
+  const defaultCity = "Rio de Janeiro";
 
   const fetchWeatherByCoordinates = useCallback(async (position) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
+    setIsLoading(true);
     try {
       const apiUrl = `${apiWeatherEndPoint}?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKeyWeather}`;
       const response = await axios.get(apiUrl);
@@ -32,10 +35,13 @@ export default function Search() {
         title: "Error fetching weather data",
         message: "Could not fetch weather data. Please try again later."
       });
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
   const fetchWeatherByCity = useCallback(async (city) => {
+    setIsLoading(true);
     try {
       const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
       const response = await axios.get(apiUrl);
@@ -45,6 +51,8 @@ export default function Search() {
         title: `${city} not found`,
         message: "Search another city or try again later."
       });
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -116,7 +124,7 @@ export default function Search() {
     if (errorAlert.display) {
       const timer = setTimeout(() => {
         setErrorAlert({ display: false });
-      }, 2500); // Adjust the time as needed (5000ms = 5 seconds)
+      }, 2500);
 
       return () => clearTimeout(timer);
     }
@@ -143,6 +151,7 @@ export default function Search() {
     event.preventDefault();
     if (city !== "") {
       try {
+        setIsLoading(true);
         const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
         const response = await axios.get(apiUrl);
         handleResponse(response);
@@ -151,6 +160,8 @@ export default function Search() {
           title: `${city} not found`,
           message: "Search another city or try again later."
         });
+      } finally {
+        setIsLoading(false);
       }
     } else {
       setError({
@@ -183,39 +194,52 @@ export default function Search() {
 
   return (
     <main className="Search">
-      <form className="search-form p-3 mb-3" onSubmit={handleSubmit}>
-        <div className="grid grid-3-col">
-          <input
-            className="form-control"
-            id="input"
-            type="search"
-            value={city}
-            placeholder="Search for a city"
-            onChange={handleCityChange}
-            autoComplete="off"
-          />
-          <button className="search-button" type="submit">
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </button>
-          <button className="search-button" type="button" onClick={getLocation}>
-            <FontAwesomeIcon icon={faLocationDot} />
-          </button>
+      {isLoading && (
+        <div className="loader-container">
+          <Loader />
         </div>
-      </form>
-      <Weather data={weatherData} />
-      {error && (
-        <Modal
-          title={error.title}
-          message={error.message}
-          onClose={errorHandler}
-        />
       )}
-      {errorAlert.display && (
-        <ChakraA
-          onClick={alertHandler}
-          title={errorAlert.title}
-          description={errorAlert.description}
-        />
+      {!isLoading && (
+        <>
+          <form className="search-form p-3 mb-3" onSubmit={handleSubmit}>
+            <div className="grid grid-3-col">
+              <input
+                className="form-control"
+                id="input"
+                type="search"
+                value={city}
+                placeholder="Search for a city"
+                onChange={handleCityChange}
+                autoComplete="off"
+              />
+              <button className="search-button" type="submit">
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
+              </button>
+              <button
+                className="search-button"
+                type="button"
+                onClick={getLocation}
+              >
+                <FontAwesomeIcon icon={faLocationDot} />
+              </button>
+            </div>
+          </form>
+          <Weather data={weatherData} />
+          {error && (
+            <Modal
+              title={error.title}
+              message={error.message}
+              onClose={errorHandler}
+            />
+          )}
+          {errorAlert.display && (
+            <ChakraA
+              onClick={alertHandler}
+              title={errorAlert.title}
+              description={errorAlert.description}
+            />
+          )}
+        </>
       )}
     </main>
   );
