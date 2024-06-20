@@ -31,7 +31,7 @@ export default function Search() {
       }
       initialFetch.current = true;
     }
-  }, []);
+  }, [fetchWeatherByCoordinates]);
 
   useEffect(() => {
     if (errorAlert.display) {
