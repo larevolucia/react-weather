@@ -20,6 +20,21 @@ export default function Search() {
   const initialFetch = useRef(false);
   const defaultCity = "New York"; // Set your default city here
 
+  const fetchWeatherByCoordinates = async (position) => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    try {
+      const apiUrl = `${apiWeatherEndPoint}?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKeyWeather}`;
+      const response = await axios.get(apiUrl);
+      handleResponse(response);
+    } catch (error) {
+      setError({
+        title: "Error fetching weather data",
+        message: "Could not fetch weather data. Please try again later."
+      });
+    }
+  };
+
   useEffect(() => {
     if (!initialFetch.current) {
       if ("geolocation" in navigator) {
@@ -31,7 +46,7 @@ export default function Search() {
       }
       initialFetch.current = true;
     }
-  }, [fetchWeatherByCoordinates]);
+  }, [fetchWeatherByCoordinates, handleLocationError]);
 
   useEffect(() => {
     if (errorAlert.display) {
@@ -139,21 +154,6 @@ export default function Search() {
     setCity(defaultCity);
     fetchWeatherByCity(defaultCity);
   }
-
-  const fetchWeatherByCoordinates = async (position) => {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    try {
-      const apiUrl = `${apiWeatherEndPoint}?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKeyWeather}`;
-      const response = await axios.get(apiUrl);
-      handleResponse(response);
-    } catch (error) {
-      setError({
-        title: "Error fetching weather data",
-        message: "Could not fetch weather data. Please try again later."
-      });
-    }
-  };
 
   const fetchWeatherByCity = async (city) => {
     try {
