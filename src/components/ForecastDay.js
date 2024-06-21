@@ -1,6 +1,6 @@
 import React from "react";
 import WeatherIcon from "./WeatherIcon";
-import "./styles/Weather.css";
+import "../styles/Weather.css";
 import FormattedDay from "./FormattedDay";
 import { celsiusToFahrenheit } from "./temperatureConversion";
 

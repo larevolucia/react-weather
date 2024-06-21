@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ForecastDay from "./ForecastDay";
 import Loader from "./Loader";
-import "./styles/Weather.css";
+import "../styles/Weather.css";
 import axios from "axios";
 
 export default function WeatherForecast({ coordinates, unit }) {

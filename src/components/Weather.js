@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./styles/Weather.css";
+import "../styles/Weather.css";
 import FormattedDate from "./FormattedDate";
 import WeatherInfo from "./WeatherInfo";
 import WeatherForecast from "./WeatherForecast";

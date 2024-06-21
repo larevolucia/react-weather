@@ -1,6 +1,6 @@
 // Modify WeatherInfo.js
 import React from "react";
-import "./styles/Weather.css";
+import "../styles/Weather.css";
 import WeatherIcon from "./WeatherIcon";
 import { celsiusToFahrenheit } from "./temperatureConversion";
 
@@ -41,6 +41,7 @@ export default function WeatherInfo({
             <button
               onClick={getCelsius}
               className={unit === "fahrenheit" ? "active" : ""}
+              disabled={unit === "celsius"}
             >
               C
             </button>
@@ -50,6 +51,7 @@ export default function WeatherInfo({
             <button
               onClick={getFahrenheit}
               className={unit === "celsius" ? "active" : ""}
+              disabled={unit === "fahrenheit"}
             >
               F
             </button>

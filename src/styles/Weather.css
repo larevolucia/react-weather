@@ -30,12 +30,13 @@ span {
   font-weight: bold;
   line-height: 1;
   margin-left: -20px;
-  opacity: 0.5;
-  font-weight: bold;
 }
 .active {
-  color: var(--hover-color);
+  color: var(--button-color);
   font-weight: bolder;
+}
+:disabled {
+  cursor: auto;
 }
 .details-table {
   font-size: 12px;
