@@ -35,7 +35,7 @@ export default function WeatherInfo({
     <div className="WeatherInfo row mt-3">
       <div id="current-temperature" className="col-6">
         <div className="weather-info-container">
-          <WeatherIcon icon={icon} size={50} />
+          <WeatherIcon icon={icon} size={42} />
           <span className="temp-current">{Math.round(temperature)}°</span>
           <span className="unit">
             <button
