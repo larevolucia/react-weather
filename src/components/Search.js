@@ -157,6 +157,23 @@ export default function Search() {
     }
   }, [errorAlert]);
 
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter" && (error || errorAlert.display)) {
+        if (error) {
+          setError(null);
+        }
+        if (errorAlert.display) {
+          setErrorAlert({ display: false });
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [error, errorAlert]);
   function handleResponse(response) {
     setWeatherData({
       ready: true,
