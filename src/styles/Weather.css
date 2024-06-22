@@ -35,6 +35,9 @@ span {
   color: var(--button-color);
   font-weight: bolder;
 }
+.active:hover {
+  color: var(--hover-color);
+}
 :disabled {
   cursor: auto;
 }

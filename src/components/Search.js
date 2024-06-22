@@ -11,6 +11,18 @@ import Modal from "./Modal";
 import ChakraA from "./ChakraA";
 import Loader from "./Loader";
 
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
 export default function Search() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState({ ready: false });
@@ -40,21 +52,24 @@ export default function Search() {
     }
   }, []);
 
-  const fetchWeatherByCity = useCallback(async (city) => {
-    setIsLoading(true);
-    try {
-      const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
-      const response = await axios.get(apiUrl);
-      handleResponse(response);
-    } catch (error) {
-      setError({
-        title: `${city} not found`,
-        message: "Search another city or try again later."
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const fetchWeatherByCity = useRef(
+    debounce(async (city) => {
+      setIsLoading(true);
+      try {
+        const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
+        const response = await axios.get(apiUrl);
+        handleResponse(response);
+      } catch (error) {
+        setError({
+          title: `${city} not found`,
+          message: "Search another city or try again later."
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }),
+    500
+  ).current;
 
   const handleLocationError = useCallback(
     (error) => {
@@ -101,8 +116,11 @@ export default function Search() {
             description: "Couldn't get location."
           });
       }
-      setCity(defaultCity);
-      fetchWeatherByCity(defaultCity);
+      if (!initialFetch.current) {
+        fetchWeatherByCity(defaultCity);
+        setCity(defaultCity);
+      } else {
+      }
     },
     [setErrorAlert, setCity, fetchWeatherByCity, defaultCity]
   );
