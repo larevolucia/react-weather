@@ -120,6 +120,7 @@ export default function Search() {
         fetchWeatherByCity(defaultCity);
         setCity(defaultCity);
       } else {
+        initialFetch.current = true;
       }
     },
     [setErrorAlert, setCity, fetchWeatherByCity, defaultCity]
@@ -134,7 +135,6 @@ export default function Search() {
       } else {
         handleLocationError({ code: "NOT_SUPPORTED" });
       }
-      initialFetch.current = true;
     }
   }, [fetchWeatherByCoordinates, handleLocationError]);
 
