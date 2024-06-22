@@ -49,6 +49,7 @@ export default function Search() {
       });
     } finally {
       setIsLoading(false);
+      initialFetch.current = true;
     }
   }, []);
 
@@ -66,9 +67,9 @@ export default function Search() {
         });
       } finally {
         setIsLoading(false);
+        initialFetch.current = true;
       }
-    }),
-    500
+    }, 500)
   ).current;
 
   const handleLocationError = useCallback(
@@ -116,6 +117,7 @@ export default function Search() {
             description: "Couldn't get location."
           });
       }
+
       if (!initialFetch.current) {
         fetchWeatherByCity(defaultCity);
         setCity(defaultCity);
@@ -129,11 +131,18 @@ export default function Search() {
   useEffect(() => {
     if (!initialFetch.current) {
       if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          fetchWeatherByCoordinates(position);
-        }, handleLocationError);
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            fetchWeatherByCoordinates(position);
+          },
+          (error) => {
+            handleLocationError(error);
+            initialFetch.current = true;
+          }
+        );
       } else {
         handleLocationError({ code: "NOT_SUPPORTED" });
+        initialFetch.current = true;
       }
     }
   }, [fetchWeatherByCoordinates, handleLocationError]);
@@ -167,26 +176,7 @@ export default function Search() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (city !== "") {
-      try {
-        setIsLoading(true);
-        const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
-        const response = await axios.get(apiUrl);
-        handleResponse(response);
-      } catch (error) {
-        setError({
-          title: `${city} not found`,
-          message: "Search another city or try again later."
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      setError({
-        title: "Empty search",
-        message: "Oops! It looks like you haven't typed anything."
-      });
-    }
+    fetchWeatherByCity(city);
   };
 
   function handleCityChange(event) {
@@ -195,9 +185,14 @@ export default function Search() {
 
   function getLocation(event) {
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        fetchWeatherByCoordinates(position);
-      }, handleLocationError);
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          fetchWeatherByCoordinates(position);
+        },
+        (error) => {
+          handleLocationError(error);
+        }
+      );
     } else {
       handleLocationError({ code: "NOT_SUPPORTED" });
     }
