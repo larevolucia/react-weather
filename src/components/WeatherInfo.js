@@ -37,25 +37,32 @@ export default function WeatherInfo({
         <div className="weather-info-container">
           <WeatherIcon icon={icon} size={42} />
           <span className="temp-current">{Math.round(temperature)}°</span>
-          <span className="unit">
-            <button
-              onClick={getCelsius}
-              className={unit === "fahrenheit" ? "active" : ""}
-              disabled={unit === "celsius"}
-            >
-              C
-            </button>
-          </span>
-          |
-          <span className="unit">
-            <button
-              onClick={getFahrenheit}
-              className={unit === "celsius" ? "active" : ""}
-              disabled={unit === "fahrenheit"}
-            >
-              F
-            </button>
-          </span>
+          {unit === "celsius" ? (
+            <>
+              <span className="unit">
+                <button disabled>C</button>
+              </span>
+              |
+              <span className="unit">
+                <button onClick={getFahrenheit} className="active">
+                  F
+                </button>
+              </span>
+            </>
+          ) : (
+            <>
+              {" "}
+              <span className="unit">
+                <button disabled>F</button>
+              </span>
+              |
+              <span className="unit">
+                <button onClick={getCelsius} className="active">
+                  C
+                </button>
+              </span>
+            </>
+          )}
         </div>
         <div>{description}</div>
       </div>
