@@ -21,7 +21,7 @@ export default function Weather({ data }) {
       const fetchTimezone = async () => {
         const tzApiKey = "W3RKUIYB1P7Z";
         const response = await fetch(
-          `http://api.timezonedb.com/v2.1/get-time-zone?key=${tzApiKey}&format=json&by=position&lat=${data.coordinates.lat}&lng=${data.coordinates.lon}`
+          `https://api.timezonedb.com/v2.1/get-time-zone?key=${tzApiKey}&format=json&by=position&lat=${data.coordinates.lat}&lng=${data.coordinates.lon}`
         );
         const result = await response.json();
         setTimezone(result);
