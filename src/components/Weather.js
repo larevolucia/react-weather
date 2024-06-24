@@ -5,25 +5,43 @@ import WeatherInfo from "./WeatherInfo";
 import WeatherForecast from "./WeatherForecast";
 
 export default function Weather({ data }) {
+  console.log(data);
   const [unit, setUnit] = useState(() => {
     const savedUnit = localStorage.getItem("weatherUnit");
     return savedUnit ? savedUnit : "celsius";
   });
+  const [timezone, setTimezone] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("weatherUnit", unit);
   }, [unit]);
 
+  useEffect(() => {
+    if (data.ready) {
+      const fetchTimezone = async () => {
+        const tzApiKey = "W3RKUIYB1P7Z";
+        const response = await fetch(
+          `http://api.timezonedb.com/v2.1/get-time-zone?key=${tzApiKey}&format=json&by=position&lat=${data.coordinates.lat}&lng=${data.coordinates.lon}`
+        );
+        const result = await response.json();
+        setTimezone(result);
+        console.log(result);
+      };
+
+      fetchTimezone();
+    }
+  }, [data]);
+
   function handleUnitChange(newUnit) {
     setUnit(newUnit);
   }
 
-  if (data.ready) {
+  if (data.ready && timezone) {
     return (
       <div className="Weather">
         <div className="weather-container">
           <h2>{data.city}</h2>
-          <FormattedDate date={data.date} />
+          <FormattedDate date={timezone.formatted} />
           <div className="weather-data">
             <WeatherInfo
               feelsLike={data.feelsLike}
