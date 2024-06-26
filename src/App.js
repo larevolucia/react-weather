@@ -3,6 +3,9 @@ import "./styles/App.css";
 import Search from "./components/Search";
 
 function App() {
+  console.log("Weather API Key:", process.env.REACT_APP_WEATHER_API_KEY);
+  console.log("Timezone API Key:", process.env.REACT_APP_TIMEZONE_API_KEY);
+
   return (
     <div className="App">
       <div className="container">
