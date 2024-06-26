@@ -26,7 +26,7 @@ function debounce(func, wait) {
 export default function Search() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState({ ready: false });
-  const apiKeyWeather = "6bf5993fd6f246de7b98dc6c43d6cd79";
+  const apiKeyWeather = process.env.REACT_APP_WEATHER_API_KEY;
   const apiWeatherEndPoint = "https://api.openweathermap.org/data/2.5/weather";
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);

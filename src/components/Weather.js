@@ -18,7 +18,7 @@ export default function Weather({ data }) {
   useEffect(() => {
     if (data.ready) {
       const fetchTimezone = async () => {
-        const tzApiKey = "W3RKUIYB1P7Z";
+        const tzApiKey = process.env.REACT_APP_TIMEZONE_API_KEY;
         const response = await fetch(
           `https://api.timezonedb.com/v2.1/get-time-zone?key=${tzApiKey}&format=json&by=position&lat=${data.coordinates.lat}&lng=${data.coordinates.lon}`
         );

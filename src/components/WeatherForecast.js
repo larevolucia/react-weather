@@ -11,7 +11,7 @@ export default function WeatherForecast({ coordinates, unit }) {
   useEffect(() => {
     const fetchForecast = async () => {
       setIsLoading(true);
-      let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
+      let apiKey = process.env.REACT_APP_WEATHER_API_KEY;
       let longitude = coordinates.lon;
       let latitude = coordinates.lat;
       let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
