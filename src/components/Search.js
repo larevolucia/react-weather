@@ -189,6 +189,7 @@ export default function Search() {
       wind: response.data.wind.speed,
       humidity: response.data.main.humidity
     });
+    setCity("");
   }
 
   const handleSubmit = async (event) => {

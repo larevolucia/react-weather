@@ -5,7 +5,6 @@ import WeatherInfo from "./WeatherInfo";
 import WeatherForecast from "./WeatherForecast";
 
 export default function Weather({ data }) {
-  console.log(data);
   const [unit, setUnit] = useState(() => {
     const savedUnit = localStorage.getItem("weatherUnit");
     return savedUnit ? savedUnit : "celsius";
@@ -25,7 +24,6 @@ export default function Weather({ data }) {
         );
         const result = await response.json();
         setTimezone(result);
-        console.log(result);
       };
 
       fetchTimezone();
