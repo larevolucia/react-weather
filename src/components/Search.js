@@ -34,24 +34,27 @@ export default function Search() {
   const initialFetch = useRef(false);
   const defaultCity = "Rio de Janeiro";
 
-  const fetchWeatherByCoordinates = useCallback(async (position) => {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    setIsLoading(true);
-    try {
-      const apiUrl = `${apiWeatherEndPoint}?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKeyWeather}`;
-      const response = await axios.get(apiUrl);
-      handleResponse(response);
-    } catch (error) {
-      setError({
-        title: "Error fetching weather data",
-        message: "Could not fetch weather data. Please try again later."
-      });
-    } finally {
-      setIsLoading(false);
-      initialFetch.current = true;
-    }
-  }, []);
+  const fetchWeatherByCoordinates = useCallback(
+    async (position) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      setIsLoading(true);
+      try {
+        const apiUrl = `${apiWeatherEndPoint}?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKeyWeather}`;
+        const response = await axios.get(apiUrl);
+        handleResponse(response);
+      } catch (error) {
+        setError({
+          title: "Error fetching weather data",
+          message: "Could not fetch weather data. Please try again later."
+        });
+      } finally {
+        setIsLoading(false);
+        initialFetch.current = true;
+      }
+    },
+    [apiKeyWeather]
+  );
 
   const fetchWeatherByCity = useRef(
     debounce(async (city) => {
