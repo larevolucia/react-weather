@@ -196,8 +196,15 @@ export default function Search() {
   }
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    fetchWeatherByCity(city);
+    if (city !== "") {
+      event.preventDefault();
+      fetchWeatherByCity(city);
+    } else {
+      setError({
+        title: "Empty search",
+        message: "Type a valid city to get started."
+      });
+    }
   };
 
   function handleCityChange(event) {
