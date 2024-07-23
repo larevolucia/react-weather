@@ -58,6 +58,8 @@ export default function Search() {
 
   const fetchWeatherByCity = useRef(
     debounce(async (city) => {
+      if (!city) return;
+
       setIsLoading(true);
       try {
         const apiUrl = `${apiWeatherEndPoint}?q=${city}&units=metric&appid=${apiKeyWeather}`;
@@ -196,14 +198,14 @@ export default function Search() {
   }
 
   const handleSubmit = async (event) => {
-    if (city !== "") {
-      event.preventDefault();
-      fetchWeatherByCity(city);
-    } else {
+    event.preventDefault();
+    if (city === "") {
       setError({
         title: "Empty search",
-        message: "Type a valid city to get started."
+        message: "Oops! It looks like you haven't typed a city."
       });
+    } else {
+      fetchWeatherByCity(city);
     }
   };
 
