@@ -47,7 +47,10 @@ span {
 }
 
 /*Forecast*/
-
+.WeatherForecast {
+  background-color: rgba(209, 238, 225, 0.3);
+  border-radius: 8px;
+}
 .ForecastDay .forecast-temp-min {
   opacity: 60%;
 }
@@ -58,6 +61,8 @@ span {
 }
 
 .scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
   height: 8px;
 }
 
@@ -66,12 +71,12 @@ span {
 }
 
 .scroll::-webkit-scrollbar-thumb {
-  background: #888;
+  background: #d1eee1d5;
   border-radius: 10px;
 }
 
 .scroll::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #d1eee1;
 }
 
 .day-card {
